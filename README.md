@@ -4,12 +4,12 @@ This repository contains various demo scripts showcasing FunASR (Fundamental Aud
 
 ## Environment Setup
 
-This project uses a dedicated Python virtual environment named `voiceProcess`. 
+This project uses a dedicated Python virtual environment named `voiceProcess`.
 
 ### Activating the Environment
 
 ```bash
-source /Users/william/Work/FunASR/funasr/bin/activate
+source voiceProcess/bin/activate
 ```
 
 When activated, you'll see `(voiceProcess)` in your terminal prompt.
@@ -17,49 +17,100 @@ When activated, you'll see `(voiceProcess)` in your terminal prompt.
 ### Environment Details
 
 - **Python Version**: 3.9.6
-- **Location**: `/Users/william/Work/VoiceData/voiceProcess`
-- **Status**: ✅ **ACTIVE** (voiceProcess environment is currently activated)
-- **Key Packages**: 
-  - pydub (0.25.1)
-  - SpeechRecognition (3.10.0)
-  - requests (2.32.4)
-  - certifi (2025.6.15)
-  - pip (25.1.1)
+- **Location**: `./voiceProcess`
 
-### Installing FunASR
+## Installation
 
-The FunASR library is required for the main functionality but is not currently installed in the environment. Install it with:
+Install the required dependencies:
 
 ```bash
-pip install funasr
+pip install -r requirements.txt
 ```
 
-## Current Status
+This will install:
+- **funasr** - Speech recognition and VAD
+- **librosa** - Audio analysis (for dog bark detection)
+- **numpy** - Numerical computing
+- **matplotlib** - Visualization (for bark detection)
+- **scipy** - Scientific computing (for bark detection)
+- **requests** - HTTP library (for Ollama integration)
 
-- **Environment**: ✅ voiceProcess virtual environment activated
-- **FunASR**: ❌ Not installed (required for main functionality)
-- **Project Management**: 📋 TODO.md created for task tracking
-- **Audio Data Path**: `/Users/william/Work/VoiceData/data`
-- **Output Path**: `/Users/william/Work/VoiceData/data/text`
+## Project Structure
+
+```
+DemoFunASR/
+├── src/                        # Main source code
+│   ├── voice_to_text_processor.py   # Audio transcription processor
+│   └── file_utils.py                # Text analysis using Ollama
+├── demos/                      # Demo scripts and utilities
+│   ├── demo2_understand.py     # Audio file discovery
+│   ├── voiceActivityDetection.py  # VAD implementation
+│   ├── dog_bark_detection.py   # Advanced bark detection
+│   ├── simple_bark_detection.py  # Simple bark detection
+│   └── ollama_example.py        # Ollama integration example
+├── data/
+│   └── text/                   # Output: transcribed text files
+├── logs/                       # Processing logs
+├── requirements.txt            # Python dependencies
+├── .gitignore                  # Git ignore rules
+└── README.md                   # This file
+```
 
 ## Contents
 
-- **demo1.py** - Basic FunASR demonstration script
-- **demo2_understand.py** - Enhanced understanding demo with FunASR
-- **voiceActivityDetection.py** - Voice activity detection implementation
-- **simple_bark_detection.py** - Simple dog bark detection using audio analysis
-- **dog_bark_detection.py** - Advanced dog bark detection with more features
-- **ollama_example.py** - Integration example with Ollama for AI processing
+### Main Processor
+- **voice_to_text_processor.py** - Batch transcribes audio files using FunASR's SenseVoice model
+  - Input: Audio files from `/Users/william/Work/VoiceData/data`
+  - Output: Transcribed text to `data/text/`
+  - Filters audio with <10 seconds of voice activity
 
-## Requirements
+### Utilities
+- **file_utils.py** - Analyzes transcribed text using Ollama API
+  - Checks for insurance/gas sales related content
+  - Categorizes conversations
 
-- Python 3.x
-- FunASR library
-- Additional dependencies as specified in each script
+### Demo Scripts (`later/`)
+- **demo2_understand.py** - Audio file discovery utility
+- **voiceActivityDetection.py** - Voice activity detection using FunASR fsmn-vad
+- **simple_bark_detection.py** - Simple dog bark detection
+- **dog_bark_detection.py** - Advanced dog bark detection with MFCC/spectral analysis
+- **ollama_example.py** - Ollama API integration example
+
+## Models
+
+The project uses these FunASR models:
+- **SenseVoiceSmall** (iic/SenseVoiceSmall) - Speech transcription
+- **fsmn-vad** - Voice Activity Detection
 
 ## Usage
 
-Each script can be run independently. Check the individual script files for specific usage instructions and requirements.
+### Transcribe Audio Files
+```bash
+python src/voice_to_text_processor.py
+```
+
+Or with custom paths:
+```bash
+AUDIOS_PATH=/path/to/audio OUTPUT_DIR=/path/to/output python src/voice_to_text_processor.py
+```
+
+### Analyze Transcribed Text
+```bash
+python src/file_utils.py
+```
+
+### Run Demo Scripts
+```bash
+python demos/voiceActivityDetection.py
+python demos/dog_bark_detection.py
+```
+
+### Environment Variables
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `AUDIOS_PATH` | `/Users/william/Work/VoiceData/data` | Input audio directory |
+| `OUTPUT_DIR` | `/Users/william/Work/VoiceData/data/text` | Output text directory |
+| `LOGS_DIR` | `./logs` | Logs directory |
 
 ## Logs
 
@@ -67,4 +118,4 @@ The `logs/` directory contains processing logs and timing data for performance a
 
 ## License
 
-This project is open source. Please check individual files for specific licensing information. 
+This project is open source. Please check individual files for specific licensing information.

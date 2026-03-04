@@ -1,0 +1,12 @@
+# Core dependencies
+funasr
+requests
+
+# Audio analysis (for dog bark detection)
+librosa
+numpy
+matplotlib
+scipy
+
+# Optional: for text processing
+# json (built-in)
